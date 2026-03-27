@@ -1,0 +1,47 @@
+body {
+    margin: 0;
+    font-family: Arial;
+    background: #0f0f0f;
+    color: white;
+}
+
+header {
+    background: black;
+    padding: 20px;
+    text-align: center;
+}
+
+section {
+    padding: 30px;
+    text-align: center;
+}
+
+video {
+    margin: 10px;
+    border-radius: 10px;
+}
+
+button {
+    padding: 10px 20px;
+    background: red;
+    color: white;
+    border: none;
+    cursor: pointer;
+}
+
+input, textarea {
+    padding: 10px;
+    margin: 10px;
+    width: 200px;
+}
+
+.whatsapp {
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+    background: green;
+    padding: 15px;
+    color: white;
+    text-decoration: none;
+    border-radius: 50px;
+}

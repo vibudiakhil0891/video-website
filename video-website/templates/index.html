@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Video Editor</title>
+    <link rel="stylesheet" href="/static/style.css">
+</head>
+<body>
+
+<!-- Navbar -->
+<header>
+    <h1>🎬 Pro Video Editor</h1>
+    <p>Reels | YouTube | Ads</p>
+</header>
+
+<!-- Upload Section -->
+<section>
+    <h2>📤 Upload Your Video</h2>
+    <form action="/upload" method="POST" enctype="multipart/form-data">
+        <input type="file" name="video" required>
+        <button type="submit">Upload</button>
+    </form>
+</section>
+
+<!-- Gallery Section -->
+<section>
+    <h2>🎥 Portfolio</h2>
+
+    {% for video in videos %}
+        <video width="300" controls>
+            <source src="{{ url_for('static', filename='../uploads/' + video) }}">
+        </video>
+    {% endfor %}
+
+</section>
+
+<!-- Contact Section -->
+<section>
+    <h2>📞 Contact</h2>
+    <form action="/contact" method="POST">
+        <input type="text" name="name" placeholder="Your Name" required>
+        <textarea name="message" placeholder="Message"></textarea>
+        <button type="submit">Send</button>
+    </form>
+</section>
+
+<h2>Admin Login</h2>
+
+<form method="POST">
+    <input type="text" name="username" placeholder="Username">
+    <input type="password" name="password" placeholder="Password">
+    <button type="submit">Login</button>
+</form>
+
+
+<!-- WhatsApp Button -->
+<a href="https://wa.me/919999999999" class="whatsapp">Chat on WhatsApp</a>
+
+<footer>
+    <p>© 2026 Video Editor</p>
+</footer>
+
+</body>
+</html>

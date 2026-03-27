@@ -1,0 +1,15 @@
+<!DOCTYPE html>
+<html>
+<body>
+
+<h1>Admin Panel</h1>
+
+<h2>Uploaded Videos</h2>
+
+{% for video in videos %}
+    <p>{{ video }}</p>
+    <a href="/delete/{{ video }}">Delete</a>
+{% endfor %}
+
+</body>
+</html>
