@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Upload Video - EditPro</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='main.css') }}">
+</head>
+<body>
+
+<!-- ================= NAVBAR ================= -->
+<nav class="navbar">
+    <div class="logo">🎬 EditPro</div>
+    <div class="links">
+        <a href="{{ url_for('home') }}">Home</a>
+        <a href="{{ url_for('my_orders') }}">My Orders</a>
+        <a href="{{ url_for('user_logout') }}">Logout</a>
+    </div>
+</nav>
+
+<!-- ================= HERO ================= -->
+<section class="hero">
+    <h1>Upload Your Video</h1>
+    <p>Select a video to upload and manage it easily.</p>
+</section>
+
+<!-- ================= UPLOAD FORM ================= -->
+<section class="upload-box" id="dropArea">
+    <form action="{{ url_for('upload') }}" method="POST" enctype="multipart/form-data">
+        <input type="file" name="video" id="fileInput" accept="video/*" required>
+        <p id="fileName">Click or Drag & Drop a video here</p>
+
+        <select name="category" id="categorySelect" required>
+            <option value="">Select Category</option>
+            <option value="Tutorial">Tutorial</option>
+            <option value="Shorts">Shorts</option>
+            <option value="Music">Music</option>
+            <option value="Others">Others</option>
+        </select>
+
+        <button type="submit" class="btn">Upload Video</button>
+
+        <video id="preview" controls style="display:none;"></video>
+    </form>
+</section>
+
+<script src="{{ url_for('static', filename='script.js') }}"></script>
+</body>
+</html>

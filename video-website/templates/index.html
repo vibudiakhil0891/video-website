@@ -1,62 +1,149 @@
+<!-- templates/index.html -->
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-    <title>Video Editor</title>
-    <link rel="stylesheet" href="/static/style.css">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>EditPro - Video Editing Studio</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
 </head>
 <body>
 
-<!-- Navbar -->
-<header>
-    <h1>🎬 Pro Video Editor</h1>
-    <p>Reels | YouTube | Ads</p>
+<!-- ================= NAVBAR ================= -->
+<header class="navbar">
+    <div class="logo">🎬 EditPro</div>
+    <nav>
+        <a href="#" class="btn">Home</a>
+        <a href="#gallery" class="btn">Gallery</a>
+        <a href="#requestEdit" class="btn">Request Edit</a>
+        <a href="#contact" class="btn">Contact</a>
+        <a href="/admin" class="btn">Admin</a>
+    </nav>
 </header>
 
-<!-- Upload Section -->
-<section>
-    <h2>📤 Upload Your Video</h2>
+<!-- ================= HERO / VIDEO UPLOAD ================= -->
+<section class="hero">
+    <h1>Professional Video Editing Studio</h1>
+    <p>Transform your raw footage into cinematic content effortlessly</p>
+
+    {% if session.get('user_id') %}
     <form action="/upload" method="POST" enctype="multipart/form-data">
-        <input type="file" name="video" required>
-        <button type="submit">Upload</button>
+        <div class="upload-box">
+            <input type="file" name="video" required>
+        </div>
+
+        <select name="category" class="btn">
+            <option value="reels">Reels</option>
+            <option value="youtube">YouTube</option>
+            <option value="cinematic">Cinematic</option>
+        </select>
+
+        <button type="submit" class="btn">Upload Video</button>
     </form>
+    {% else %}
+        <p>Please <a href="/user-login">login</a> to upload videos.</p>
+    {% endif %}
 </section>
 
-<!-- Gallery Section -->
-<section>
-    <h2>🎥 Portfolio</h2>
+<!-- ================= VIDEO GALLERY ================= -->
+<section class="video-gallery" id="gallery">
+    <h2>Your Videos</h2>
 
-    {% for video in videos %}
-        <video width="300" controls>
-            <source src="{{ url_for('static', filename='../uploads/' + video) }}">
-        </video>
-    {% endfor %}
+    <!-- Filter Controls -->
+    <div class="gallery-controls">
+        <input type="text" id="searchInput" placeholder="Search videos...">
+        <select id="filterSelect">
+            <option value="all">All Categories</option>
+            <option value="reels">Reels</option>
+            <option value="youtube">YouTube</option>
+            <option value="cinematic">Cinematic</option>
+        </select>
+    </div>
 
+    <!-- Gallery Cards -->
+    <div class="cards" id="galleryCards">
+        {% if videos %}
+            {% for video in videos %}
+            <div class="gallery-card" data-category="{{ video.category }}">
+                <video src="/uploads/{{ video.filename }}" controls></video>
+                <p>{{ video.filename }}</p>
+                <p>Status: {{ video.status }}</p>
+            </div>
+            {% endfor %}
+        {% else %}
+            <p>No videos uploaded yet.</p>
+        {% endif %}
+    </div>
 </section>
 
-<!-- Contact Section -->
-<section>
-    <h2>📞 Contact</h2>
-    <form action="/contact" method="POST">
+<!-- ================= REQUEST EDIT ================= -->
+<section class="request-edit" id="requestEdit">
+    <h2>Request a Video Edit</h2>
+
+    {% if session.get('user_id') %}
+    <form action="/create-order" method="POST">
+        <label for="videoSelect">Select Video:</label>
+        <select name="video_id" id="videoSelect" required>
+            {% for video in videos %}
+                <option value="{{ video.id }}">{{ video.filename }}</option>
+            {% endfor %}
+        </select>
+
+        <label for="description">Describe Your Edit:</label>
+        <textarea name="description" id="description" placeholder="Describe what edits you want..." required></textarea>
+
+        <button type="submit" class="btn">Request Edit</button>
+    </form>
+    {% else %}
+        <p>Please <a href="/user-login">login</a> to request a video edit.</p>
+    {% endif %}
+</section>
+
+<!-- ================= USER ORDERS ================= -->
+<section class="order-list">
+    <h2>Your Orders</h2>
+
+    {% if orders %}
+        {% for order in orders %}
+            <div class="card">
+                <p><strong>Order ID:</strong> {{ order.id }}</p>
+                <p><strong>Status:</strong> {{ order.status }}</p>
+                <p><strong>Description:</strong> {{ order.description }}</p>
+
+                {% if order.status != "paid" %}
+                    <a href="/pay/{{ order.id }}" class="btn">Pay Now</a>
+                {% else %}
+                    <span style="color:green;">Paid ✅</span>
+                {% endif %}
+            </div>
+        {% endfor %}
+    {% else %}
+        <p>No orders yet.</p>
+    {% endif %}
+
+    {% if session.get('user_id') %}
+        <a href="/my-orders" class="btn">My Orders</a>
+    {% endif %}
+</section>
+
+<!-- ================= CONTACT FORM ================= -->
+<section class="contact" id="contact">
+    <h2>Contact Us</h2>
+
+    <form method="POST" action="/contact">
         <input type="text" name="name" placeholder="Your Name" required>
-        <textarea name="message" placeholder="Message"></textarea>
-        <button type="submit">Send</button>
+        <input type="email" name="email" placeholder="Your Email" required>
+        <textarea name="message" placeholder="Your Message" required></textarea>
+        <button type="submit" class="btn">Send Message</button>
     </form>
 </section>
 
-<h2>Admin Login</h2>
+<!-- ================= LINK JS ================= -->
+<script src="{{ url_for('static', filename='script.js') }}"></script>
 
-<form method="POST">
-    <input type="text" name="username" placeholder="Username">
-    <input type="password" name="password" placeholder="Password">
-    <button type="submit">Login</button>
-</form>
-
-
-<!-- WhatsApp Button -->
-<a href="https://wa.me/919999999999" class="whatsapp">Chat on WhatsApp</a>
-
+<!-- ================= FOOTER ================= -->
 <footer>
-    <p>© 2026 Video Editor</p>
+    <p>© 2026 EditPro</p>
 </footer>
 
 </body>

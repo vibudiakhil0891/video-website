@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>My Orders - EditPro</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='main.css') }}">
+</head>
+<body>
+
+<nav class="navbar">
+    <div class="logo">🎬 EditPro</div>
+    <div class="links">
+        <a href="{{ url_for('home') }}">Home</a>
+        <a href="{{ url_for('user_logout') }}">Logout</a>
+    </div>
+</nav>
+
+<section class="order-section">
+    <h1>My Orders</h1>
+    <div class="cards">
+        {% for order in orders %}
+            <div class="card">
+                <p><strong>Order ID:</strong> {{ order.id }}</p>
+                <p><strong>Video ID:</strong> {{ order.video_id }}</p>
+                <p><strong>Description:</strong> {{ order.description }}</p>
+                <p><strong>Price:</strong> ₹{{ order.price }}</p>
+                <p><strong>Status:</strong> {{ order.status }}</p>
+
+                {% if order.status != 'paid' %}
+                    <a href="/pay/{{ order.id }}" class="btn">Pay Now</a>
+                {% endif %}
+            </div>
+        {% endfor %}
+    </div>
+
+    <div style="margin-top: 20px;">
+        <a href="{{ url_for('home') }}" class="btn">⬅ Back to Home</a>
+    </div>
+</section>
+
+<footer>
+    &copy; 2026 EditPro. All rights reserved.
+</footer>
+
+</body>
+</html>

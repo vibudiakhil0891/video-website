@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pay Order - EditPro</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='main.css') }}">
+    <script src="https://checkout.razorpay.com/v1/checkout.js"></script>
+</head>
+<body>
+
+<nav class="navbar">
+    <div class="logo">🎬 EditPro</div>
+    <div class="links">
+        <a href="{{ url_for('home') }}">Home</a>
+        {% if session.get('user_id') %}
+            <a href="{{ url_for('user_logout') }}">Logout</a>
+        {% else %}
+            <a href="{{ url_for('user_login') }}">Login</a>
+        {% endif %}
+    </div>
+</nav>
+
+<section class="hero">
+    <h1>Pay for Order #{{ order.id }}</h1>
+    <p>Amount: ₹{{ order.price }}</p>
+</section>
+
+<section class="order-section">
+    <button id="payBtn" class="btn">Pay Now</button>
+</section>
+
+<footer>
+    &copy; 2026 EditPro. All rights reserved.
+</footer>
+
+<script>
+    const payBtn = document.getElementById("payBtn");
+
+    payBtn.addEventListener("click", () => {
+        const options = {
+            "key": "{{ key_id }}",
+            "amount": "{{ razorpay_order.amount }}", // in paise
+            "currency": "{{ razorpay_order.currency }}",
+            "name": "EditPro",
+            "description": "Video Order Payment",
+            "order_id": "{{ razorpay_order.id }}",
+            "handler": function (response){
+                // Redirect to server route to mark payment success
+                window.location.href = "/payment-success/{{ order.id }}";
+            },
+            "theme": {
+                "color": "#38bdf8"
+            }
+        };
+        const rzp1 = new Razorpay(options);
+        rzp1.open();
+    });
+</script>
+
+</body>
+</html>

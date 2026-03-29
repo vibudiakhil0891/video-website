@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Contact Us - EditPro</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='main.css') }}">
+</head>
+<body>
+
+<nav class="navbar">
+    <div class="logo">🎬 EditPro</div>
+    <div class="links">
+        <a href="{{ url_for('home') }}">Home</a>
+        {% if session.get('user_id') %}
+            <a href="{{ url_for('user_logout') }}">Logout</a>
+        {% else %}
+            <a href="{{ url_for('user_login') }}">Login</a>
+        {% endif %}
+    </div>
+</nav>
+
+<section class="hero">
+    <h1>Contact Us</h1>
+    <p>Send us a message, we’d love to hear from you!</p>
+</section>
+
+<section class="contact">
+    <form method="POST" action="{{ url_for('contact') }}">
+        <input type="text" name="name" placeholder="Your Name" required>
+        <input type="email" name="email" placeholder="Your Email" required>
+        <textarea name="message" rows="6" placeholder="Your Message" required></textarea>
+        <button type="submit" class="btn">Send Message</button>
+    </form>
+</section>
+
+<footer>
+    &copy; 2026 EditPro. All rights reserved.
+</footer>
+
+<script>
+    // Optional: Alert on success/failure using JavaScript fetch (if you want AJAX)
+    const contactForm = document.querySelector("form[action='{{ url_for('contact') }}']");
+    if (contactForm) {
+        contactForm.addEventListener("submit", async (e) => {
+            e.preventDefault();
+            const submitBtn = contactForm.querySelector("button");
+            const formData = new FormData(contactForm);
+            submitBtn.textContent = "Sending...";
+            submitBtn.disabled = true;
+
+            try {
+                const res = await fetch(contactForm.action, {
+                    method: "POST",
+                    body: formData
+                });
+                if (res.ok) {
+                    alert("Message sent successfully!");
+                    contactForm.reset();
+                } else {
+                    alert("Failed to send message.");
+                }
+            } catch (err) {
+                alert("Error: " + err.message);
+            } finally {
+                submitBtn.textContent = "Send Message";
+                submitBtn.disabled = false;
+            }
+        });
+    }
+</script>
+
+</body>
+</html>

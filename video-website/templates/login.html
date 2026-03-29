@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Login - EditPro</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='login.css') }}">
+</head>
+<body>
+
+<!-- ================= LOGIN CONTAINER ================= -->
+<div class="login-container">
+
+    <!-- Logo & Heading -->
+    <h1>🎬 EditPro Admin</h1>
+    <p class="subtitle">Secure Dashboard Login</p>
+
+    <!-- Display Error Message -->
+    {% if error %}
+        <div class="error">{{ error }}</div>
+    {% endif %}
+
+    <!-- ================= LOGIN FORM ================= -->
+    <form method="POST" action="/login" autocomplete="on">
+
+        <!-- Username -->
+        <div class="form-group">
+            <label for="username">Username</label>
+            <input 
+                type="text" 
+                id="username"
+                name="username" 
+                placeholder="Enter your username" 
+                required
+                autocomplete="username"
+            >
+        </div>
+
+        <!-- Password -->
+        <div class="form-group">
+            <label for="password">Password</label>
+            <input 
+                type="password" 
+                id="password"
+                name="password" 
+                placeholder="Enter your password" 
+                required
+                autocomplete="current-password"
+            >
+        </div>
+
+        <!-- Remember Me -->
+        <div class="form-group remember">
+            <input type="checkbox" id="remember">
+            <label for="remember">Remember Me</label>
+        </div>
+
+        <!-- Submit Button -->
+        <button type="submit" class="btn">Login</button>
+
+    </form>
+
+    <!-- Extra Links -->
+    <div class="extra-links">
+        <a href="/">⬅ Back to Home</a>
+    </div>
+
+</div>
+
+<!-- ================= LINK JS ================= -->
+<script src="{{ url_for('static', filename='script.js') }}"></script>
+</body>
+</html>

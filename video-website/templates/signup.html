@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>User Signup - EditPro</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='login.css') }}">
+</head>
+<body>
+
+<div class="login-container">
+    <h1>🎬 User Signup</h1>
+    <p class="subtitle">Create your account</p>
+
+    {% if error %}
+        <div class="error">{{ error }}</div>
+    {% endif %}
+    {% if success %}
+        <div class="success">{{ success }}</div>
+    {% endif %}
+
+    <form method="POST" action="{{ url_for('signup') }}" autocomplete="on">
+        <input type="text" name="username" placeholder="Enter Username" required>
+        <input type="email" name="email" placeholder="Enter Email" required autocomplete="username">
+        <input type="password" name="password" placeholder="Enter Password" required autocomplete="new-password">
+        <button type="submit" class="btn">Signup</button>
+    </form>
+
+    <div class="extra-links">
+        <a href="{{ url_for('user_login') }}">Already have an account? Login</a> | 
+        <a href="{{ url_for('home') }}">Back to Home</a>
+    </div>
+</div>
+
+</body>
+</html>

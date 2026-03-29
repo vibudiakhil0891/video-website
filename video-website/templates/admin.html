@@ -1,15 +1,107 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>EditPro Admin Dashboard</title>
+
+  <!-- Link to CSS -->
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+
+  <!-- Optional JS -->
+  <script defer src="{{ url_for('static', filename='js/script.js') }}"></script>
+</head>
 <body>
 
-<h1>Admin Panel</h1>
+  <!-- NAVBAR -->
+  <header class="navbar">
+    <div class="logo">🎬 EditPro Admin</div>
+    <nav>
+      <a href="/" class="active">🏠 Home</a>
+      <a href="/logout">🔓 Logout</a>
+    </nav>
+  </header>
 
-<h2>Uploaded Videos</h2>
+  <div class="dashboard-container">
 
-{% for video in videos %}
-    <p>{{ video }}</p>
-    <a href="/delete/{{ video }}">Delete</a>
-{% endfor %}
+    <!-- DASHBOARD CARDS -->
+    <section class="cards-section">
+      <h2>Dashboard Analytics</h2>
+      <div class="cards">
+        <div class="card">
+          <h3>Total Videos</h3>
+          <p>{{ analytics.total_videos }}</p>
+        </div>
+        <div class="card">
+          <h3>Pending Approvals</h3>
+          <p>{{ analytics.pending_videos }}</p>
+        </div>
+        <div class="card">
+          <h3>Total Orders</h3>
+          <p>{{ analytics.total_orders }}</p>
+        </div>
+        <div class="card">
+          <h3>Total Revenue</h3>
+          <p>₹{{ analytics.total_revenue }}</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- VIDEO GALLERY -->
+    <section class="video-gallery">
+      <h2>Uploaded Videos</h2>
+      <div class="gallery-cards">
+        {% if videos %}
+          {% for video in videos %}
+            <div class="gallery-card">
+              <video src="{{ url_for('static', filename='uploads/' + video.filename) }}" controls></video>
+              <p><strong>File:</strong> {{ video.filename }}</p>
+              <p><strong>Category:</strong> {{ video.category }}</p>
+              <p><strong>Status:</strong>
+                <span class="status {{ video.status }}">{{ video.status|capitalize }}</span>
+              </p>
+              <div class="actions">
+                <a href="/status/{{ video.id }}/approved" class="btn approve">Approve</a>
+                <a href="/status/{{ video.id }}/rejected" class="btn reject">Reject</a>
+                <a href="/status/{{ video.id }}/pending" class="btn pending">Pending</a>
+                <a href="/delete/{{ video.id }}" class="btn delete">Delete</a>
+              </div>
+            </div>
+          {% endfor %}
+        {% else %}
+          <p>No videos uploaded yet.</p>
+        {% endif %}
+      </div>
+    </section>
+
+    <!-- ORDER MANAGEMENT -->
+    <section class="order-section">
+      <h2>Client Orders</h2>
+      <div class="gallery-cards">
+        {% if orders %}
+          {% for order in orders %}
+            <div class="gallery-card">
+              <p><strong>Order ID:</strong> {{ order.id }}</p>
+              <p><strong>User ID:</strong> {{ order.user_id }}</p>
+              <p><strong>Video ID:</strong> {{ order.video_id }}</p>
+              <p><strong>Description:</strong> {{ order.description }}</p>
+              <p><strong>Status:</strong>
+                <span class="status {{ order.status }}">{{ order.status|capitalize }}</span>
+              </p>
+              <p><strong>Price:</strong> ₹{{ order.price }}</p>
+              <div class="actions">
+                <a href="/order-status/{{ order.id }}/completed" class="btn complete">Mark Completed</a>
+                <a href="/order-status/{{ order.id }}/pending" class="btn pending">Pending</a>
+              </div>
+            </div>
+          {% endfor %}
+        {% else %}
+          <p>No orders yet.</p>
+        {% endif %}
+      </div>
+    </section>
+
+  </div>
 
 </body>
 </html>
