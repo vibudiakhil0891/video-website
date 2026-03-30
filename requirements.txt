@@ -1,6 +1,0 @@
-flask
-gunicorn
-Flask-Mail
-Flask-SQLAlchemy
-Flask-Migrate
-razorpay
