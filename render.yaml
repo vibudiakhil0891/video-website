@@ -1,6 +1,0 @@
-services:
-  - type: web
-    name: video-website
-    env: python
-    buildCommand: "pip install -r requirements.txt"
-    startCommand: "gunicorn video-website.app:app"
